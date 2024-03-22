@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 
 load_dotenv()
 DATABASE_URL = os.getenv("MONGODB_CONN")
-client = AsyncIOMotorClient(DATABASE_URL)
 
 
 def fill_dict(group_type: str):
@@ -94,6 +93,7 @@ async def agg_data(group_type: str, date_from: datetime, date_to: datetime) -> s
                 }
             }
         ]
+        client = AsyncIOMotorClient(DATABASE_URL)
         cursor = client.sampleDB.sample_collection.aggregate(max_pipeline_test)
         query = await cursor.to_list(length=None)
         result = res_scheme(date_from=date_from, date_to=date_to, group=group_type)
